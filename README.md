@@ -1556,6 +1556,7 @@ This bias voltage ensures that the PMOS transistor operates at the required oper
 ### DC Operating Point :
 
 <img width="857" height="611" alt="Screenshot 2026-03-27 221400" src="https://github.com/user-attachments/assets/d5d24ea5-a68b-4376-9d64-43ebf3b466a3" />
+
 - The figure shows the AC analysis result of the MOS differential amplifier obtained from LTspice simulation. The plot represents the voltage gain versus frequency response of the amplifier. From the graph, it can be observed that the amplifier provides a **high midband gain of approximately 54 dB,** which corresponds to a voltage gain of around 500.
 -  In the low-frequency and mid-frequency regions, the gain remains almost constant, indicating stable amplification. As the frequency increases, the gain gradually decreases due to the presence of parasitic capacitances in the MOSFET devices and circuit nodes. These parasitic elements introduce a dominant pole, which limits the bandwidth of the amplifier.
 -   The frequency response therefore shows a roll-off at higher frequencies, which is typical for MOSFET amplifier circuits. Overall, the AC analysis confirms that the designed differential amplifier provides high gain and acceptable bandwidth for the intended operation.
@@ -1814,56 +1815,46 @@ First-order theoretical analysis assumes ideal MOSFET operation in saturation an
 | Voltage Gain ($A_v$) | 4.5 V/V | 6.04 V/V |
 | Gain (dB) | 14.46 dB | 15.62 dB |
 
-The deviation between theoretical and simulated gain is mainly due to simplified first-order assumptions used in analytical calculations and the inclusion of non-ideal MOSFET effects such as channel length modulation, mobility degradation, and parasitic capacitances in simulation.
+The difference between the theoretical and simulated gain mainly arises from the simplified first-order assumptions used in analytical calculations. In practical simulations, the MOSFET model includes several non-ideal effects such as channel length modulation, mobility degradation, and parasitic capacitances, which slightly alter the gain value.
 
----
+Inference
 
-## Inference
+The MOS differential amplifier with a resistive load was successfully designed and analyzed while satisfying the specified design constraints:
 
-The MOS differential amplifier with resistive load was successfully designed and analyzed while satisfying the given design constraints:
+Power consumption ≤ 1.8 mW
+VDD = 0.9 V
+VSS = −0.9 V
+VOCM = 0 V
 
-Power consumption ≤ 1.8mW  
-VDD = 0.9V  
-VSS = -0.9V  
-Vocm = 0V  
+To meet the power limitation, the tail current of the differential pair was selected as 1 mA. Choosing an appropriate tail current is important because it determines the biasing condition and overall stability of the amplifier.
 
-The tail current was selected as 1mA to ensure operation within the power limit (1.8mW). Under balanced conditions, the current splits equally between the two transistors:
+Under balanced input conditions, when both input voltages are equal, the tail current is equally divided between the two NMOS transistors:
 
-The tail current of the differential pair was chosen as 1 mA in order to satisfy the specified power constraint of 1.8 mW while maintaining proper amplifier operation. Selecting an appropriate tail current is important because it determines the biasing condition and overall stability of the differential amplifier.
+$I_{D1} = I_{D2} = 0.5,mA$
 
-Under balanced input conditions, where both input voltages are equal, the tail current is equally divided between the two NMOS transistors. Therefore, each transistor carries half of the total current:
+This equal current distribution ensures symmetrical operation of the differential pair, which is essential for proper differential amplification and good common-mode rejection.
 
-I_D1 = I_D2 = 0.5 mA
+The operating point was selected carefully so that both NMOS transistors remain in the saturation region, enabling stable gain and linear amplification. The source node voltage was adjusted to the required tail voltage:
 
-This equal current distribution ensures that both branches of the differential pair operate symmetrically, which is necessary for accurate differential amplification and proper common-mode rejection.
+$V_S \approx -0.7V$
 
-The bias point was selected carefully so that both NMOS transistors remain in the saturation region, which is required for the amplifier to achieve stable gain and linear operation. To maintain this condition, the source node voltage was adjusted to the desired tail voltage.
-$$
-I_{D1} = I_{D2} = 0.5mA
-$$
+Maintaining this source voltage establishes the correct gate-to-source voltage (V_GS) for the transistors, ensuring that the desired drain current flows and the differential pair operates at the intended bias point. The final bias condition was achieved by fine-tuning the transistor width during simulation.
 
-The bias point was carefully chosen such that both NMOS transistors operate in saturation, ensuring proper differential amplification. The source node voltage was adjusted to match the required tail voltage:
+Theoretical and simulated results show reasonable agreement:
 
-$$
-V_S \approx -0.7V
-Maintaining the correct source voltage helps establish the proper gate-to-source voltage (V_GS) for the transistors, ensuring that the required drain current flows and the differential pair operates under the intended biasing conditions.
-$$
+ - Theoretical gain ≈ 5.29 V/V (14.46 dB)
+ - Simulated gain ≈ 6.04 V/V (15.62 dB)
+ - Simulated bandwidth ≈ 4.819 MHz
+ - Unity Gain Bandwidth ≈ 15.03 MHz
 
-by tuning the transistor width during simulation.
+The small difference between calculated and simulated gain is mainly due to second-order device effects that are not included in simplified analytical models.
 
-Theoretical and simulated results are reasonably consistent:
+From the AC analysis, the amplifier exhibits a nearly constant gain in the midband region. At higher frequencies, the gain gradually decreases due to parasitic capacitances associated with MOSFET terminals and internal circuit nodes. These capacitances introduce a dominant pole, which limits the overall bandwidth of the amplifier.
 
-Theoretical gain ≈ 5.29 V/V (14.46 dB)  
-Simulated gain ≈ 6.04 V/V (15.62 dB)  
-Simulated bandwidth ≈ 4.819 MHz  
-Unity Gain Bandwidth ≈ 15.03 MHz  
+The differential amplifier operates linearly when the differential input signal remains small, allowing both transistors to stay in saturation and share the tail current. However, if the differential input voltage becomes too large, one transistor carries most of the current while the other approaches cutoff. This leads to non-linear behavior and distortion in the output waveform.
 
-The difference between the theoretical gain and the simulated gain occurs mainly due to various second-order effects present in practical MOSFET models. These include channel length modulation, mobility degradation, and parasitic capacitances that influence the actual circuit behavior. In theoretical calculations, ideal assumptions are typically used, and factors such as the finite output resistance of the transistors are often neglected.
-
-From the AC analysis, it can be observed that the amplifier shows a nearly constant gain in the midband region. As the frequency increases, the gain gradually decreases due to the presence of parasitic capacitances within the transistors and the circuit. These capacitances introduce a dominant pole, which limits the overall bandwidth of the amplifier.
+Overall, the designed differential amplifier satisfies the required specifications. The simulation results confirm proper biasing, expected voltage gain, and acceptable frequency response, demonstrating that the circuit operates correctly under the given design conditions.
 
 The differential amplifier operates linearly when the differential input signal is small, allowing both transistors to remain in the saturation region and share the tail current. However, when the input differential voltage becomes larger than the allowable range, one transistor begins to dominate the current while the other approaches cutoff. This condition leads to non-linear operation and causes distortion in the output signal.
-
-Therefore, the designed differential amplifier meets the required design objectives. The simulation results confirm proper biasing of the transistors, expected voltage gain characteristics, and a reasonable frequency response within the operating range.
 
 ---
